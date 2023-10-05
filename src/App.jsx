@@ -42,7 +42,7 @@ const App = () => {
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value)
     console.log(event.target.value)
-    const filtered = persons.filter((person) => person.name.includes(event.target.value))
+    const filtered = persons.filter((person) => person.name.toLowerCase().includes(event.target.value.toLowerCase()))
     setFilteredPersons(filtered)
   }
 
