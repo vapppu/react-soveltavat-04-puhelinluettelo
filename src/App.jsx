@@ -5,13 +5,16 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 
+  const clearInputFields = () => {
+    setNewName("")
+    setNewNumber("")
+  }
   const addName = (event) => {
     event.preventDefault();
     const newPerson = { name: newName, number: newNumber };
     if (!persons.find((person) => person.name === newPerson.name)) {
       setPersons(persons.concat(newPerson))
-      setNewName("")
-      setNewNumber("")
+      clearInputFields();
 
       console.log(`${newName} added to book`)
     }
@@ -19,8 +22,7 @@ const App = () => {
       console.log(`${newName} is already added in the phone book and therefore not added again`)
     }
     console.log("Setting new name to empty")
-    setNewName("")
-    setNewNumber("")
+    clearInputFields();
   };
 
   const handleNameChange = (event) => {
