@@ -11,10 +11,10 @@ const App = () => {
       setPersons(persons.concat(newPerson))
       setNewName("")
 
-      console.log("New person added")
+      console.log(`${newName} added to book`)
     }
     else {
-      console.log("Person found and therefore not added")
+      console.log(`${newName} is already added in the phone book and therefore not added again`)
     }
     console.log("Setting new name to empty")
     setNewName("")
@@ -29,7 +29,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <form onSubmit={addName}>
         <div>
-          name: <input onChange={handleChange} />
+          name: <input onChange={handleChange} value={newName}/>
         </div>
         <div>
           <button type="submit">add</button>
