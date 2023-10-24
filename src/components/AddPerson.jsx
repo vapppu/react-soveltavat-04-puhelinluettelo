@@ -25,7 +25,7 @@ const AddPerson = ({persons, updatePersons}) => {
   };
 
   return (
-    <div style={{backgroundColor: 'pink'}}>
+    <div>
     <h2>Add a new</h2>
     <form onSubmit={addNewPerson}>
       <div>
