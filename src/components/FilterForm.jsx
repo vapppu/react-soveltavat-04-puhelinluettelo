@@ -5,7 +5,6 @@ const FilterForm = ({ filterPersons, searchTerm, updateSearchTerm }) => {
         filterPersons(event.target.value)
       }
 
-      
     return (
         <div>Filter shown with: <input onChange={handleSearchChange} value={searchTerm}/></div>
         )
