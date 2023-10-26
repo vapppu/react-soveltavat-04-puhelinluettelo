@@ -1,20 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import AddPerson from './components/AddPerson'
 import ListPersons from './components/ListPersons'
 import FilterForm from './components/FilterForm'
+import axios from "axios";
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ])
-
+  const [persons, setPersons] = useState([])
   const [filteredPersons, setFilteredPersons] = useState(persons)
 
-  const showPersons = (substring) => {
+  const personDB = 'http://localhost:3001/persons'
+
+  useEffect(() => {
+    console.log("Fetch persons")
+    axios
+      .get(personDB)
+      .then((result) => {
+        console.log(result.data)
+        setPersons(result.data)
+      })
+  }, [])
+
+  useEffect(() => {
+    setFilteredPersons(persons)
+  }, [persons])
+
+  const filterPersons = (substring) => {
     const filtered = persons.filter((person) => person.name.toLowerCase().includes(substring.toLowerCase()))
     setFilteredPersons(filtered)
   }
@@ -36,7 +47,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <FilterForm filterPersons={(substring) => showPersons(substring)}/>
+      <FilterForm filterPersons={(substring) => filterPersons(substring)}/>
       <AddPerson persons = {persons} updatePersons = {(person) => updatePersons(person)}/>
       <ListPersons filteredPersons = {filteredPersons} />
     </div>
