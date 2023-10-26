@@ -8,6 +8,8 @@ import axios from "axios";
 const App = () => {
   const [persons, setPersons] = useState([])
   const [filteredPersons, setFilteredPersons] = useState(persons)
+  const [searchTerm, setSearchTerm] = useState("");
+
 
   const personDB = 'http://localhost:3001/persons'
 
@@ -43,12 +45,16 @@ const App = () => {
     }
   }
 
+  const updateSearchTerm = (string) => {
+    setSearchTerm(string)
+  }
+
 
   return (
     <div>
       <h1>Phonebook</h1>
-      <FilterForm filterPersons={(substring) => filterPersons(substring)}/>
-      <AddPerson persons = {persons} updatePersons = {(person) => updatePersons(person)}/>
+      <FilterForm filterPersons={filterPersons} searchTerm = {searchTerm} updateSearchTerm = {updateSearchTerm}/>
+      <AddPerson persons = {persons} updatePersons = {updatePersons}/>
       <ListPersons filteredPersons = {filteredPersons} />
     </div>
   );

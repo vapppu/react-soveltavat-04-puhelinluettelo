@@ -1,12 +1,7 @@
-import { useState, useEffect } from 'react'
-
-const FilterForm = ({filterPersons }) => {
-    const [searchTerm, setSearchTerm] = useState("");
-
-    useEffect(() => {setSearchTerm("")}, [])
+const FilterForm = ({ filterPersons, searchTerm, updateSearchTerm }) => {
 
     const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value)
+        updateSearchTerm(event.target.value)
         filterPersons(event.target.value)
       }
 
