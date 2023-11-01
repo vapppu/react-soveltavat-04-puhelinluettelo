@@ -48,7 +48,19 @@ const App = () => {
   }
 
   const removePerson = (person) => {
-    console.log(`Removing person ${person.id}`)
+    console.log(`Removing person ${person.name}`)
+    const personToRemove = persons.find((personInList) => personInList.id === person.id)
+    personService
+      .remove(personToRemove.id)
+      .then((response) => {
+        const newPersons = persons.filter(person => person.id !== personToRemove.id)
+        setPersons(newPersons)
+        setFilteredPersons(newPersons)
+      })
+      .catch(error => {
+        alert(`Person ${person.name} was already deleted from server`)
+        setPersons(persons.filter(person => person.id !== personToRemove.id))
+      })
 
   }
 
