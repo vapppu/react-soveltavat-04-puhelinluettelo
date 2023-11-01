@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import AddPerson from './components/AddPerson'
 import ListPersons from './components/ListPersons'
 import FilterForm from './components/FilterForm'
-import axios from "axios";
 import personService from './services/persons'
 
 const App = () => {
@@ -48,6 +47,11 @@ const App = () => {
     }
   }
 
+  const removePerson = (person) => {
+    console.log(`Removing person ${person.id}`)
+
+  }
+
   const updateSearchTerm = (string) => {
     setSearchTerm(string)
   }
@@ -58,7 +62,7 @@ const App = () => {
       <h1>Phonebook</h1>
       <FilterForm filterPersons={filterPersons} searchTerm = {searchTerm} updateSearchTerm = {updateSearchTerm}/>
       <AddPerson persons = {persons} addPerson = {addPerson}/>
-      <ListPersons filteredPersons = {filteredPersons} />
+      <ListPersons filteredPersons = {filteredPersons} removePerson = {removePerson}/>
     </div>
   );
 };
