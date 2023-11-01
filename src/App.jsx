@@ -31,11 +31,10 @@ const App = () => {
   };
 
   const addPerson = (person) => {
-
     const personInBook = persons.find(
       (personInList) =>
         personInList.name.toLowerCase() === person.name.toLowerCase()
-    )
+    );
 
     if (!personInBook) {
       personService.create(person).then((returnedPerson) => {
@@ -44,24 +43,22 @@ const App = () => {
         setPersons(newPersons);
         setFilteredPersons(newPersons);
       });
-    } 
-    else if (personInBook.number === person.number) {
+    } else if (personInBook.number === person.number) {
       alert(`${personInBook.name} is already added in the phone book`);
-      }
-      
-      else if (window.confirm(`Person ${person.name} is already added in the phone book. Replace old number with new one?`))
-        {        
-          personService
-          .update(personInBook.id, person)
-          .then((response) =>  {
-            const newPersons = persons.map((person) => (person.id !== response.id ? person : response))
-            setPersons(newPersons)
-            setFilteredPersons(newPersons)
-            })    
-        
+    } else if (
+      window.confirm(
+        `Person ${person.name} is already added in the phone book. Replace old number with new one?`
+      )
+    ) {
+      personService.update(personInBook.id, person).then((response) => {
+        const newPersons = persons.map((person) =>
+          person.id !== response.id ? person : response
+        );
+        setPersons(newPersons);
+        setFilteredPersons(newPersons);
+      });
     }
-  
-};
+  };
 
   const removePerson = (person) => {
     console.log(`Button clicked to remove person ${person.name}`);
