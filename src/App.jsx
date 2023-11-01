@@ -4,22 +4,21 @@ import AddPerson from './components/AddPerson'
 import ListPersons from './components/ListPersons'
 import FilterForm from './components/FilterForm'
 import axios from "axios";
+import personService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [filteredPersons, setFilteredPersons] = useState(persons)
   const [searchTerm, setSearchTerm] = useState("");
 
-
   const personDB = 'http://localhost:3001/persons'
 
   useEffect(() => {
     console.log("Fetch persons")
-    axios
-      .get(personDB)
-      .then((result) => {
-        console.log(result.data)
-        setPersons(result.data)
+    personService
+      .getAll()
+      .then((initialPersons) => {
+        setPersons(initialPersons)
       })
   }, [])
 
@@ -32,12 +31,16 @@ const App = () => {
     setFilteredPersons(filtered)
   }
 
-  const updatePersons = (person) => {
+  const addPerson = (person) => {
     if (!persons.find((personInList) => personInList.name.toLowerCase() === person.name.toLowerCase())) {
-      const newPersons = persons.concat(person)
-      setPersons(newPersons)
-      setFilteredPersons(newPersons)
-      console.log(`${person.name} added to book`)
+      personService
+        .create(person)
+        .then(returnedPerson => {
+          console.log(returnedPerson)
+          const newPersons = persons.concat(returnedPerson)
+          setPersons(newPersons)
+          setFilteredPersons(newPersons)
+        })
     }
 
     else {
@@ -54,7 +57,7 @@ const App = () => {
     <div>
       <h1>Phonebook</h1>
       <FilterForm filterPersons={filterPersons} searchTerm = {searchTerm} updateSearchTerm = {updateSearchTerm}/>
-      <AddPerson persons = {persons} updatePersons = {updatePersons}/>
+      <AddPerson persons = {persons} addPerson = {addPerson}/>
       <ListPersons filteredPersons = {filteredPersons} />
     </div>
   );

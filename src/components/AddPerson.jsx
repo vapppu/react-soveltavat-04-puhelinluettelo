@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const AddPerson = ({persons, updatePersons}) => {
+const AddPerson = ({persons, addPerson}) => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 
@@ -19,7 +19,7 @@ const AddPerson = ({persons, updatePersons}) => {
 
   const addNewPerson = (event) => {
     event.preventDefault();
-    updatePersons({name: newName, number: newNumber})
+    addPerson({name: newName, number: newNumber})
     clearInputFields();
   };
 
