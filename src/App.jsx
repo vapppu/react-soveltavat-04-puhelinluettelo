@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
 
+import './index.css'
+
 import AddPerson from "./components/AddPerson";
 import ListPersons from "./components/ListPersons";
 import FilterForm from "./components/FilterForm";
+import Notification from "./components/Notification"
 import personService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [filteredPersons, setFilteredPersons] = useState(persons);
   const [searchTerm, setSearchTerm] = useState("");
+  const [message, setMessage] = useState(null)
 
   const personDB = "http://localhost:3001/persons";
 
@@ -23,12 +27,23 @@ const App = () => {
     setSearchTerm("")
   }, [persons]);
 
+  // useEffect(() => {
+  //   if (message) {
+  //     setTimeout(() => {setMessage(null)}, [5000])
+  //   }
+  // }, [message])
+
   const filterPersons = (substring) => {
     const filtered = persons.filter((person) =>
       person.name.toLowerCase().includes(substring.toLowerCase())
     );
     setFilteredPersons(filtered);
   };
+
+  const showMessage = (message, isError) => {
+    setMessage({text: message, isError: isError})
+    setTimeout(() => {setMessage(null)}, [5000])
+  }
 
   const addPerson = (person) => {
     const personInBook = persons.find(
@@ -37,12 +52,14 @@ const App = () => {
     );
 
     if (!personInBook) {
-      personService.create(person).then((returnedPerson) => {
+      personService.create(person)
+      .then((returnedPerson) => {
         const newPersons = persons.concat(returnedPerson);
         setPersons(newPersons);
+        showMessage(`${person.name} added to phonebook.`, false)
       });
     } else if (personInBook.number === person.number) {
-      alert(`${personInBook.name} is already added in the phone book`);
+      showMessage(`${personInBook.name} is already added in the phone book`, true);
     } else if (
       window.confirm(
         `Person ${person.name} is already added in the phone book. Replace old number with new one?`
@@ -53,6 +70,7 @@ const App = () => {
           person.id !== response.id ? person : response
         );
         setPersons(newPersons);
+        showMessage(`Number updated for ${person.name}.`, false)
       });
     }
   };
@@ -73,9 +91,10 @@ const App = () => {
             (person) => person.id !== personToRemove.id
           );
           setPersons(newPersons);
+          setMessage(`Person ${personToRemove.name} removed from phonebook.`)
         })
         .catch((error) => {
-          alert(`Person ${person.name} was already deleted from server`);
+          showMessage(`Person ${person.name} was already deleted from server`, true);
           setPersons(
             persons.filter((person) => person.id !== personToRemove.id)
           );
@@ -90,6 +109,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={message}/>
       <FilterForm
         filterPersons={filterPersons}
         searchTerm={searchTerm}
