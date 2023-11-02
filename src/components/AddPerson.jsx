@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const AddPerson = ({persons, addPerson}) => {
+const AddPerson = ({ addPerson}) => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 

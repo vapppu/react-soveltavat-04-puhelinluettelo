@@ -13,7 +13,6 @@ const App = () => {
   const personDB = "http://localhost:3001/persons";
 
   useEffect(() => {
-    console.log("Fetch persons");
     personService.getAll().then((initialPersons) => {
       setPersons(initialPersons);
     });
@@ -21,6 +20,7 @@ const App = () => {
 
   useEffect(() => {
     setFilteredPersons(persons);
+    setSearchTerm("")
   }, [persons]);
 
   const filterPersons = (substring) => {
@@ -38,10 +38,8 @@ const App = () => {
 
     if (!personInBook) {
       personService.create(person).then((returnedPerson) => {
-        console.log(returnedPerson);
         const newPersons = persons.concat(returnedPerson);
         setPersons(newPersons);
-        setFilteredPersons(newPersons);
       });
     } else if (personInBook.number === person.number) {
       alert(`${personInBook.name} is already added in the phone book`);
@@ -55,7 +53,6 @@ const App = () => {
           person.id !== response.id ? person : response
         );
         setPersons(newPersons);
-        setFilteredPersons(newPersons);
       });
     }
   };
@@ -76,7 +73,6 @@ const App = () => {
             (person) => person.id !== personToRemove.id
           );
           setPersons(newPersons);
-          setFilteredPersons(newPersons);
         })
         .catch((error) => {
           alert(`Person ${person.name} was already deleted from server`);
@@ -99,7 +95,7 @@ const App = () => {
         searchTerm={searchTerm}
         updateSearchTerm={updateSearchTerm}
       />
-      <AddPerson persons={persons} addPerson={addPerson} />
+      <AddPerson addPerson={addPerson} />
       <ListPersons
         filteredPersons={filteredPersons}
         removePerson={removePerson}
