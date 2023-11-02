@@ -14,8 +14,6 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState(null)
 
-  const personDB = "http://localhost:3001/persons";
-
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
       setPersons(initialPersons);
@@ -26,12 +24,6 @@ const App = () => {
     setFilteredPersons(persons);
     setSearchTerm("")
   }, [persons]);
-
-  // useEffect(() => {
-  //   if (message) {
-  //     setTimeout(() => {setMessage(null)}, [5000])
-  //   }
-  // }, [message])
 
   const filterPersons = (substring) => {
     const filtered = persons.filter((person) =>
@@ -76,7 +68,6 @@ const App = () => {
   };
 
   const removePerson = (person) => {
-    console.log(`Button clicked to remove person ${person.name}`);
     const personToRemove = persons.find(
       (personInList) => personInList.id === person.id
     );
@@ -91,10 +82,10 @@ const App = () => {
             (person) => person.id !== personToRemove.id
           );
           setPersons(newPersons);
-          setMessage(`Person ${personToRemove.name} removed from phonebook.`)
+          showMessage(`${personToRemove.name} removed from phonebook.`, false)
         })
         .catch((error) => {
-          showMessage(`Person ${person.name} was already deleted from server`, true);
+          showMessage(`${person.name} was already deleted from server`, true);
           setPersons(
             persons.filter((person) => person.id !== personToRemove.id)
           );
